@@ -29,9 +29,4 @@ export class AppController {
   getFavicon16(@Res() res: Response) {
     res.status(HttpStatus.NO_CONTENT).send()
   }
-
-  @Get('speech-to-text')
-  speechToText() {
-    return this.appService.speechToText()
-  }
 }
