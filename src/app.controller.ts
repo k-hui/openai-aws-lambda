@@ -12,11 +12,6 @@ export class AppController {
     return this.appService.getHello()
   }
 
-  @Get('speech-to-text')
-  speechToText() {
-    return this.appService.speechToText()
-  }
-
   @Get('favicon.ico')
   @ApiExcludeEndpoint()
   getFavicon(@Res() res: Response) {
@@ -33,5 +28,10 @@ export class AppController {
   @ApiExcludeEndpoint()
   getFavicon16(@Res() res: Response) {
     res.status(HttpStatus.NO_CONTENT).send()
+  }
+
+  @Get('speech-to-text')
+  speechToText() {
+    return this.appService.speechToText()
   }
 }
