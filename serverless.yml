@@ -11,6 +11,11 @@ provider:
   environment:
     STAGE: ${sls:stage}
     OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+  httpApi:
+    cors: true
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
 
 custom:
   serverless-offline:
