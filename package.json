@@ -8,7 +8,8 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "sls offline start -s local --reloadHandler",
+    "start": "nest start --debug --watch",
+    "start:local": "sls offline start -s local --reloadHandler",
     "start:dev": "sls offline start -s dev --reloadHandler",
     "start:prd": "sls offline start -s prd --reloadHandler",
     "start:debug": "nest start --debug --watch",
