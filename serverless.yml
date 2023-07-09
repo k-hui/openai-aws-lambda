@@ -1,0 +1,44 @@
+service: openai-aws-lambda
+frameworkVersion: '^3'
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  memorySize: 256
+  timeout: 29
+  environment:
+    STAGE: ${sls:stage}
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+  optimize:
+    external: ['swagger-ui-dist']
+  serverless-offline-watcher:
+    - path:
+        - src
+      command: echo "[serverless] src folder was modified."
+
+package:
+  individually: true
+  patterns:
+    - 'files/**'
+
+functions:
+  main:
+    handler: src/lambda.handler
+    package:
+      patterns:
+        - '!node_modules/@aws-sdk'
+        - '!node_modules/aws-sdk'
+    events:
+      - httpApi: '*'
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-plugin-optimize
+  - serverless-offline
+  - serverless-offline-watcher
