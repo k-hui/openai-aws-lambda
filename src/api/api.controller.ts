@@ -1,15 +1,9 @@
-import {
-  Controller,
-  Headers,
-  Post,
-  Body,
-  UseInterceptors,
-  UploadedFile,
-} from '@nestjs/common'
+import { Controller, Post, UseInterceptors, UploadedFile } from '@nestjs/common'
 import { ApiService } from './api.service'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { extname } from 'path'
+import fs from 'fs'
 
 @Controller('api')
 export class ApiController {
@@ -30,12 +24,12 @@ export class ApiController {
       }),
     }),
   )
-  speechToText(
-    @Headers('host') host: string,
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: any,
-  ) {
+  async speechToText(@UploadedFile() file: Express.Multer.File) {
     console.log(file)
-    return this.apiService.speechToText(file)
+    // const f1 = fs.readFileSync(file.path)
+    // console.log(f1)
+    // const f2 = fs.readFileSync('files/test.wav')
+    // console.log(f2)
+    return this.apiService.speechToText(file.path)
   }
 }

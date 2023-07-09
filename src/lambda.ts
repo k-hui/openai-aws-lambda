@@ -51,10 +51,18 @@ async function bootstrapServer(): Promise<RequestListener> {
       new ExpressAdapter(expressApp),
       {
         logger: ['error', 'warn', 'debug'],
+        bodyParser: false,
       },
     )
     setupSwagger(nestApp)
-    nestApp.useGlobalPipes(new ValidationPipe())
+    nestApp.enableCors()
+    nestApp.use(express.json({ limit: '50mb' }))
+    nestApp.use(express.urlencoded({ limit: '50mb', extended: true }))
+    nestApp.useGlobalPipes(
+      new ValidationPipe({
+        forbidUnknownValues: false,
+      }),
+    )
     nestApp.useGlobalInterceptors(new LoggingInterceptor())
     nestApp.useGlobalInterceptors(new ErrorsInterceptor())
     nestApp.enableVersioning({
@@ -72,6 +80,12 @@ export const handler: Handler = async (
   callback: any,
 ) => {
   const app = await bootstrapServer()
-  const handler = serverlessExpress({ app })
+  const handler = serverlessExpress({
+    app,
+    binarySettings: {
+      isBinary: true,
+      contentTypes: ['audio/*', 'multipart/form-data'],
+    },
+  })
   return handler(event, context, callback)
 }
